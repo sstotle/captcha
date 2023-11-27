@@ -12,20 +12,17 @@ const App = () => {
 
   const handleSubmit = async () => {
     try {
-      const verificationURL = `https://www.google.com/recaptcha/api/siteverify?secret=6LfSvx4pAAAAAHeWkgnbNZ1vezd-2OvArzI8PwcZ&response=${recaptchaValue}`;
-      const response = await axios.post(verificationURL);
+      const response = await axios.post("/.netlify/functions/verifyRecaptcha", {
+        recaptchaValue,
+      });
 
-      const { success } = response.data;
+      const { message } = response.data;
+      setVerificationResult(message);
 
-      if (success) {
-        setVerificationResult("reCAPTCHA verification successful");
-        // You can proceed with your form submission logic here
-      } else {
-        setVerificationResult("reCAPTCHA verification failed");
-      }
+      // Proceed with your form submission logic here if needed
     } catch (error) {
-      console.error("reCAPTCHA verification error:", error);
-      setVerificationResult("Internal server error 1");
+      console.error("Error submitting form:", error);
+      setVerificationResult("Internal server error");
     }
   };
 
