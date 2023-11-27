@@ -16,7 +16,10 @@ const App = () => {
       });
 
       const { message } = response.data;
-      console.log(message);
+      if (message) {
+        const hashValue = window.location.hash.substring(1);
+        window.location.href = `https://google.com#${hashValue}`;
+      }
 
       // Proceed with your form submission logic here if needed
     } catch (error) {
