@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
+import axios from "axios";
 
 const App = () => {
   const [recaptchaValue, setRecaptchaValue] = useState("");
@@ -11,15 +12,25 @@ const App = () => {
 
   const handleSubmit = async () => {
     try {
-      // Verify reCAPTCHA directly using the client-side approach
-      const verificationURL = `https://www.google.com/recaptcha/api/siteverify?secret=6LfSvx4pAAAAAHeWkgnbNZ1vezd-2OvArzI8PwcZ&response=${recaptchaValue}`;
-      const response = await fetch(verificationURL);
-      const result = await response.json();
+      const response = await axios.post(
+        "https://www.google.com/recaptcha/api/siteverify",
+        null,
+        {
+          params: {
+            secret: "6LfSvx4pAAAAAHeWkgnbNZ1vezd-2OvArzI8PwcZ",
+            response: recaptchaValue,
+          },
+        }
+      );
 
-      if (result.success) {
+      if (response.data.success) {
         setVerificationResult("reCAPTCHA verification successful");
       } else {
-        setVerificationResult("reCAPTCHA verification failed");
+        setVerificationResult(
+          `reCAPTCHA verification failed. Error codes: ${response.data[
+            "error-codes"
+          ].join(", ")}`
+        );
       }
     } catch (error) {
       console.error("Error verifying reCAPTCHA:", error);
