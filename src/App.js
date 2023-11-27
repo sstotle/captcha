@@ -1,25 +1,50 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 
-function App() {
+const App = () => {
+  const [recaptchaValue, setRecaptchaValue] = useState("");
+  const [verificationResult, setVerificationResult] = useState("");
+
+  const handleRecaptchaChange = (value) => {
+    setRecaptchaValue(value);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      // Verify reCAPTCHA directly using the client-side approach
+      const verificationURL = `https://www.google.com/recaptcha/api/siteverify?secret=6LfSvx4pAAAAAHeWkgnbNZ1vezd-2OvArzI8PwcZ&response=${recaptchaValue}`;
+      const response = await fetch(verificationURL);
+      const result = await response.json();
+
+      if (result.success) {
+        setVerificationResult("reCAPTCHA verification successful");
+      } else {
+        setVerificationResult("reCAPTCHA verification failed");
+      }
+    } catch (error) {
+      console.error("Error verifying reCAPTCHA:", error);
+      setVerificationResult("Internal server error");
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>React App with reCAPTCHA</h1>
+
+      {/* Google reCAPTCHA */}
+      <ReCAPTCHA
+        sitekey="6LfSvx4pAAAAAGaJXrjwrkifVb3vBs0HeKkAWKo-"
+        onChange={handleRecaptchaChange}
+      />
+
+      <button type="button" onClick={handleSubmit}>
+        Submit
+      </button>
+
+      {/* Display verification result */}
+      <p>{verificationResult}</p>
     </div>
   );
-}
+};
 
 export default App;
