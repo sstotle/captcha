@@ -12,29 +12,20 @@ const App = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post(
-        "https://www.google.com/recaptcha/api/siteverify",
-        null,
-        {
-          params: {
-            secret: "6LfSvx4pAAAAAHeWkgnbNZ1vezd-2OvArzI8PwcZ",
-            response: recaptchaValue,
-          },
-        }
-      );
+      const verificationURL = `https://www.google.com/recaptcha/api/siteverify?secret=6LfSvx4pAAAAAHeWkgnbNZ1vezd-2OvArzI8PwcZ&response=${recaptchaValue}`;
+      const response = await axios.post(verificationURL);
 
-      if (response.data.success) {
+      const { success } = response.data;
+
+      if (success) {
         setVerificationResult("reCAPTCHA verification successful");
+        // You can proceed with your form submission logic here
       } else {
-        setVerificationResult(
-          `reCAPTCHA verification failed. Error codes: ${response.data[
-            "error-codes"
-          ].join(", ")}`
-        );
+        setVerificationResult("reCAPTCHA verification failed");
       }
     } catch (error) {
-      console.error("Error verifying reCAPTCHA:", error);
-      setVerificationResult("Internal server error");
+      console.error("reCAPTCHA verification error:", error);
+      setVerificationResult("Internal server error 1");
     }
   };
 
