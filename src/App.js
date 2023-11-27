@@ -4,7 +4,6 @@ import axios from "axios";
 
 const App = () => {
   const [recaptchaValue, setRecaptchaValue] = useState("");
-  const [verificationResult, setVerificationResult] = useState("");
 
   const handleRecaptchaChange = (value) => {
     setRecaptchaValue(value);
@@ -17,31 +16,31 @@ const App = () => {
       });
 
       const { message } = response.data;
-      setVerificationResult(message);
+      console.log(message);
 
       // Proceed with your form submission logic here if needed
     } catch (error) {
       console.error("Error submitting form:", error);
-      setVerificationResult("Internal server error");
     }
   };
 
   return (
-    <div>
-      <h1>React App with reCAPTCHA</h1>
+    <div className=" container mt-5 pt-5 ">
+      <div className="mt-5 pt-5 w-50 mx-3">
+        {/* Google reCAPTCHA */}
+        <ReCAPTCHA
+          sitekey="6LfSvx4pAAAAAGaJXrjwrkifVb3vBs0HeKkAWKo-"
+          onChange={handleRecaptchaChange}
+        />
 
-      {/* Google reCAPTCHA */}
-      <ReCAPTCHA
-        sitekey="6LfSvx4pAAAAAGaJXrjwrkifVb3vBs0HeKkAWKo-"
-        onChange={handleRecaptchaChange}
-      />
-
-      <button type="button" onClick={handleSubmit}>
-        Submit
-      </button>
-
-      {/* Display verification result */}
-      <p>{verificationResult}</p>
+        <button
+          type="button"
+          onClick={handleSubmit}
+          className="btn btn-primary mt-1"
+        >
+          Submit
+        </button>
+      </div>
     </div>
   );
 };
