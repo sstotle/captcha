@@ -65,14 +65,6 @@ const App = () => {
           sitekey="6LfSvx4pAAAAAGaJXrjwrkifVb3vBs0HeKkAWKo-"
           onChange={handleRecaptchaChange}
         />
-
-        <button
-          type="button"
-          // onClick={handleSubmit}
-          className="btn btn-primary mt-1"
-        >
-          Submit
-        </button>
       </div>
     </div>
   );
